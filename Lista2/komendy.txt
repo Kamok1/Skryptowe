@@ -1,0 +1,16 @@
+﻿type books/calineczka.txt | python lab_2.py
+type books/calineczka.txt | python count_chars.py
+type books/calineczka.txt | python count_paragraphs.py
+type books/calineczka.txt | python count_proper_names.py
+type books/calineczka.txt | python filter_fourth_quartile_sentences.py
+type books/calineczka.txt | python filter_marks.py
+type books/calineczka.txt | python filter_sentences_at_most_four_words.py
+type books/calineczka.txt | python filter_sentences_lexicographical_order.py
+type books/calineczka.txt | python filter_sentences_with_conjunctions.py
+type books/calineczka.txt | python first_20_sentences.py
+type books/calineczka.txt | python first_sentence_multiple_commas.py
+type books/calineczka.txt | python longest_sentence.py
+type books/calineczka.txt | python longest_sentence_no_same_letter.py
+
+
+type books/calineczka.txt | python first_20_sentences.py | python count_paragraphs.py
