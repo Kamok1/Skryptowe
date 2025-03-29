@@ -8,9 +8,9 @@ NEW_LINE_NUMBER: int = 2
 def gen_paragraphs(stream: TextIO):
     paragraph = ""
     newline_count = 0
-    for ch in stream:
-        paragraph += ch
-        if ch == NEW_LINE_SIGN:
+    for line in stream:
+        paragraph += line
+        if line == NEW_LINE_SIGN:
             newline_count += 1
         else:
             newline_count = 0
@@ -19,7 +19,7 @@ def gen_paragraphs(stream: TextIO):
             paragraph = ""
             newline_count = 0
 
-    if paragraph.strip():
+    if paragraph:
         yield paragraph
 
 def main():

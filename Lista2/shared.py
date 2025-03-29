@@ -8,12 +8,12 @@ def gen_lines(stream: TextIO) -> Generator[str, None, None]:
     #     yield line
     line = ""
     for text in stream:
-        for char in text:
-            if char == NEW_LINE_SIGN:
+        for ch in text:
+            if ch == NEW_LINE_SIGN:
                 yield line
                 line = ""
             else:
-                line += char
+                line += ch
     yield line
 
 def clean_line(line: str) -> str:

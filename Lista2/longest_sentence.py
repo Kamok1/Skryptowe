@@ -11,11 +11,11 @@ def get_longest_sentence(stream: TextIO) -> str:
     return longest
 
 def main():
-    with open("books/calineczka.txt", "r", encoding="utf-8") as file:
-        longest = get_longest_sentence(file)
-        sys.stdout.write(longest)
-    # longest = get_longest_sentence(sys.stdin)
-    # sys.stdout.write(longest)
+    # with open("books/calineczka.txt", "r", encoding="utf-8") as file:
+    #     longest = get_longest_sentence(file)
+    #     sys.stdout.write(longest)
+    longest = get_longest_sentence(sys.stdin)
+    sys.stdout.write(longest)
 
 if __name__ == '__main__':
     main()
