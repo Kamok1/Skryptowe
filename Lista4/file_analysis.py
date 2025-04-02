@@ -20,7 +20,7 @@ def analyze_file(file_path):
         most_common_char = Counter(all_chars).most_common(1)
         most_common_word = Counter(words).most_common(1)
 
-        result = {
+        return {
             FILE_PATH: file_path,
             TOTAL_CHARACTERS: total_characters,
             TOTAL_WORDS: total_words,
@@ -29,17 +29,17 @@ def analyze_file(file_path):
             MOST_COMMON_WORD: most_common_word[0] if most_common_word else None
         }
 
-        return result
-
     except Exception as e:
         print(f"Błąd podczas analizy pliku {file_path}: {e}")
         return None
 
-def save_results_to_json(results):
+
+def save_result_to_json(result):
     try:
-        print(json.dumps(results))
+        print(json.dumps(result))
     except Exception as e:
-        print(f"Błąd podczas zapisywania wyników do JSON: {e}")
+        print(f"Błąd podczas zapisywania wyniku do JSON: {e}")
+
 
 def main():
     file_path = sys.stdin.readline().strip()
@@ -51,10 +51,10 @@ def main():
     result = analyze_file(file_path)
 
     if result:
-        results = [result]
-        save_results_to_json(results)
+        save_result_to_json(result)
     else:
         print(f"Błąd podczas analizy pliku {file_path}.")
+
 
 if __name__ == "__main__":
     main()

@@ -11,17 +11,10 @@ MAGICK_COMMAND = 'magick'
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-
-def convert_video_audio(file_path, output_format):
+def convert_file(file_path, output_format, command, extra_args=None):
     output_path = utils.get_output_path(file_path, output_format)
-    result = run_command([ FFMPEG_COMMAND, '-i', file_path, output_path])
-    utils.log_conversion(file_path, output_path, output_format, FFMPEG_COMMAND, result)
-
-def convert_image(file_path, output_format):
-    output_path = utils.get_output_path(file_path, output_format)
-    result = run_command([ MAGICK_COMMAND, file_path, output_path ])
-    utils.log_conversion(file_path, output_path, output_format, MAGICK_COMMAND, result)
-
+    result = run_command([command] + (extra_args or []) + [file_path, output_path])
+    utils.log_conversion(file_path, output_path, output_format, command, result)
 
 def run_command(command):
     try:
@@ -52,9 +45,9 @@ def convert_files(directory_path, video_format, photo_format):
             continue
 
         if utils.is_video_or_audio(file_path) and video_format:
-            convert_video_audio(file_path, video_format)
+            convert_file(file_path, video_format, FFMPEG_COMMAND, extra_args=['-i'])
         elif utils.is_image(file_path) and photo_format:
-            convert_image(file_path, photo_format)
+            convert_file(file_path, photo_format, MAGICK_COMMAND)
         else:
             logger.warning(f"Plik {file} nie ma obsługiwanego formatu.")
 

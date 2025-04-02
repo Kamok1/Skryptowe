@@ -10,7 +10,10 @@ def get_path_dirs():
 def get_executable_files(directory):
     try:
         files = os.listdir(directory)
-        return [f for f in files if os.path.isfile(os.path.join(directory, f)) and os.access(os.path.join(directory, f), os.X_OK)]
+        return [
+            f for f in files
+            if (full_path := os.path.join(directory, f)) and os.path.isfile(full_path) and os.access(full_path, os.X_OK)
+        ]
     except FileNotFoundError:
         return []
     except PermissionError:
@@ -21,20 +24,21 @@ def list_path_dirs():
     for directory in path_dirs:
         print(directory)
 
-def list_executables():
-    for directory in get_path_dirs():
-        print(f"\n[{directory}]")
-        executables = get_executable_files(directory)
-        if executables:
-            print("\n".join(executables))
-        else:
-            print("No executable files found.")
+def list_current_dir_executables():
+    current_dir = os.getcwd()
+    print(f"[{current_dir}]")
+    executables = get_executable_files(current_dir)
+    if executables:
+        print("\n".join(executables))
+    else:
+        print("No executable files found.")
+
 
 if __name__ == "__main__":
-    list_executables()
     if "--list" in sys.argv:
         list_path_dirs()
     if "--executables" in sys.argv:
-        list_executables()
+        list_path_dirs()
+        list_current_dir_executables()
     else:
         print("python path_info.py [--list | --executables]")

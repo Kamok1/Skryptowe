@@ -18,7 +18,7 @@ def analyze_files_in_directory(directory_path):
         try:
             result = subprocess.run(['python', 'file_analysis.py'], input=file_path, capture_output=True, text=True)
             if result.returncode == 0:
-                results.extend(json.loads(result.stdout))
+                results.append(json.loads(result.stdout))
             else:
                 print(f"Błąd podczas przetwarzania pliku {file}:\n{result.stderr}")
 
@@ -50,7 +50,7 @@ def generate_summary(results):
     most_common_char = char_counter.most_common(1)
     most_common_word = word_counter.most_common(1)
 
-    summary = {
+    return {
         TOTAL_FILES: total_files,
         TOTAL_CHARACTERS: total_characters,
         TOTAL_WORDS: total_words,
@@ -58,7 +58,6 @@ def generate_summary(results):
         MOST_COMMON_CHAR: most_common_char,
         MOST_COMMON_WORD: most_common_word
     }
-    return summary
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Analiza plików w katalogu")
