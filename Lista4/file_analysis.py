@@ -3,7 +3,8 @@ from collections import Counter
 import string
 import sys
 
-from constans import FILE_PATH, TOTAL_CHARACTERS, TOTAL_WORDS, TOTAL_LINES, MOST_COMMON_WORD, MOST_COMMON_CHAR
+from constans import (FILE_PATH, TOTAL_CHARACTERS, TOTAL_WORDS,
+                      TOTAL_LINES, MOST_COMMON_WORD, MOST_COMMON_CHAR)
 
 
 def analyze_file(file_path):

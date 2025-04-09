@@ -5,7 +5,8 @@ import json
 import sys
 from collections import Counter
 
-from constans import TOTAL_CHARACTERS, TOTAL_WORDS, TOTAL_LINES, MOST_COMMON_CHAR, MOST_COMMON_WORD, TOTAL_FILES
+from constans import (TOTAL_CHARACTERS, TOTAL_WORDS, TOTAL_LINES,
+                      MOST_COMMON_CHAR, MOST_COMMON_WORD, TOTAL_FILES)
 
 
 def analyze_files_in_directory(directory_path):
@@ -38,14 +39,13 @@ def generate_summary(results):
     char_counter = Counter()
     word_counter = Counter()
     for res in results:
-        if isinstance(res, dict):
-            if res[MOST_COMMON_CHAR]:
-                char, count = res[MOST_COMMON_CHAR]
-                char_counter[char] += count
+        if res[MOST_COMMON_CHAR]:
+            char, count = res[MOST_COMMON_CHAR]
+            char_counter[char] += count
 
-            if res[MOST_COMMON_WORD]:
-                word, count = res[MOST_COMMON_WORD]
-                word_counter[word] += count
+        if res[MOST_COMMON_WORD]:
+            word, count = res[MOST_COMMON_WORD]
+            word_counter[word] += count
 
     most_common_char = char_counter.most_common(1)
     most_common_word = word_counter.most_common(1)
