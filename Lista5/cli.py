@@ -11,6 +11,8 @@ from group_measurement_files_by_key import group_measurement_files_by_key
 
 logger = get_logger("air_quality")
 
+METADATA_PATH = "data/stacje.csv"
+MEASUREMENTS_DIRECTORY = "data/measurements"
 
 def parse_args():
     parser = argparse.ArgumentParser(description="CLI do analizy jakości powietrza")
@@ -45,13 +47,13 @@ def filter_measurements(measurements, start, end, station_code=None):
     df = filter_measurements_by_date(df, start, end)
 
     if station_code:
-        df = df[df[MEASUREMENTS_STATION_CODE] == station_code]
+        df = df[df[STATION_CODE] == station_code]
     return df
 
 
 def filter_measurements_by_date(df, start, end):
-    df[MEASUREMENTS_TIMESTAMP] = pd.to_datetime(df[MEASUREMENTS_TIMESTAMP], errors='coerce')
-    return df[(df[MEASUREMENTS_TIMESTAMP] >= start) & (df[MEASUREMENTS_TIMESTAMP] <= end)]
+    df[TIMESTAMP] = pd.to_datetime(df[TIMESTAMP], errors='coerce')
+    return df[(df[TIMESTAMP] >= start) & (df[TIMESTAMP] <= end)]
 
 
 def get_first_station_with_data(measurements, start, end, preferred_code=None):
@@ -59,13 +61,13 @@ def get_first_station_with_data(measurements, start, end, preferred_code=None):
     df = filter_measurements_by_date(df, start, end)
 
     if preferred_code:
-        if not df[df[MEASUREMENTS_STATION_CODE] == preferred_code].empty:
+        if not df[df[STATION_CODE] == preferred_code].empty:
             logger.info(f"Użyto preferowanej stacji: {preferred_code}")
             return preferred_code
         else:
             logger.warning(f"Stacja {preferred_code} nie ma danych w tym przedziale czasu.")
 
-    stations = df[MEASUREMENTS_STATION_CODE].unique()
+    stations = df[STATION_CODE].unique()
     if len(stations) > 0:
         logger.info(f"Zamieniono na stację z danymi: {stations[0]}")
         return stations[0]
@@ -79,7 +81,7 @@ def random_station(measurements, start, end, metadata):
     if df.empty:
         logger.warning("Brak danych w podanym przedziale czasowym.")
         return None
-    stations = df[MEASUREMENTS_STATION_CODE].unique()
+    stations = df[STATION_CODE].unique()
     station = random.choice(stations)
     for s in metadata[STATIONS]:
         if s.get(METADATA_STATION_CODE) == station:
@@ -94,7 +96,7 @@ def show_stats(measurements, station_code, start, end):
         return None
 
     df = filter_measurements(measurements, start, end, real_station_code)
-    values = pd.to_numeric(df[MEASUREMENTS_VALUE], errors='coerce').dropna()
+    values = pd.to_numeric(df[VALUE], errors='coerce').dropna()
     if values.empty:
         logger.warning(f"Stacja {real_station_code} nie posiada wartości liczbowych w tym zakresie.")
         return None
@@ -114,8 +116,8 @@ def main():
         logger.error(f"Niepoprawny format daty: {e}")
         return
 
-    metadata_path = Path("data/stacje.csv")
-    measurement_files = find_measurement_files(args.measure, args.freq, Path("data/measurements"))
+    metadata_path = Path(METADATA_PATH)
+    measurement_files = find_measurement_files(args.measure, args.freq, Path(MEASUREMENTS_DIRECTORY))
 
     if not metadata_path.exists():
         logger.error("Brak pliku metadanych.")
