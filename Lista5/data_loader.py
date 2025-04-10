@@ -9,12 +9,16 @@ logger = get_logger("data_loader")
 def parse_metadata(path):
     logger.info(f"Otwieranie pliku metadanych: {path}")
     try:
+        total_bytes = 0
         with path.open("r", encoding="utf-8") as file:
             reader = csv.reader(file, delimiter=",")
             headers = [h.strip() for h in next(reader)]
             stations = []
 
             for row in reader:
+                total_bytes += sum(len(cell.encode("utf-8")) for cell in row)
+                logger.debug(f"Odczytano {total_bytes} bajtów")
+
                 if len(row) == len(headers):
                     stations.append(dict(zip(headers, [cell.strip() for cell in row])))
                 else:
