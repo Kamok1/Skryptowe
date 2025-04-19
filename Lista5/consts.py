@@ -18,3 +18,6 @@ METADATA_LONGITUDE = "WGS84 λ E"
 METADATA_OPEN_DATE = "Data uruchomienia"
 METADATA_CLOSE_DATE = "Data zamknięcia"
 METADATA_STATION_KIND = "Rodzaj stacji"
+
+EXTENDED_DATE_FORMAT = '%d/%m/%y %H:%M'
+

@@ -1,8 +1,8 @@
 ﻿import csv
 from datetime import datetime
 from pathlib import Path
-from utils import get_logger
-from consts import *
+from Lista5.utils import get_logger
+from Lista5.consts import *
 
 logger = get_logger("data_loader")
 
@@ -52,7 +52,7 @@ def parse_measurements(path):
                 logger.debug(f"Odczytano {total_bytes} bajtów")
 
                 try:
-                    timestamp = datetime.strptime(row[0], "%m/%d/%y %H:%M")
+                    timestamp = datetime.strptime(row[0], EXTENDED_DATE_FORMAT)
                 except ValueError:
                     continue
 
@@ -65,7 +65,7 @@ def parse_measurements(path):
                     station_code, indicator, avg_time, unit, pos_code = stations_info[i]
 
                     results.append({
-                        TIMESTAMP: timestamp.strftime("%Y-%m-%d %H:%M"),
+                        TIMESTAMP: timestamp.strftime(EXTENDED_DATE_FORMAT),
                         STATION_CODE: station_code,
                         INDICATOR: indicator,
                         AVERAGE_TIME: avg_time,

@@ -1,11 +1,24 @@
 ﻿import re
-from utils import get_logger
+from pathlib import Path
+from typing import Optional
 
-logger = get_logger("data_loader", False)
+from Lista5.utils import get_logger
 
-def group_measurement_files_by_key(path):
-    pattern_with_brackets = re.compile(r"(\d{4})_.*\(([A-Z0-9]+)\)_(\w+)\.csv$")
-    pattern_without_brackets = re.compile(r"(\d{4})_([A-Z0-9]+)_(\w+)\.csv$")
+logger = get_logger("data_loader")
+
+PATTERN = re.compile(r"(\d{4})_([A-Za-z0-9]+(?:\([A-Za-z0-9]+\))?)_(\w+)\.csv$")
+
+def get_measurement_keys(file) -> Optional[tuple]:
+    match = PATTERN.match(file.name)
+    if match:
+        year, variable, frequency = match.groups()
+        key = (year, variable, frequency)
+        return key, file
+    else:
+        logger.debug(f"Pominięto niedopasowany plik: {file.name}")
+        return None
+
+def group_measurement_files_by_key(path) -> dict:
     result = {}
 
     if not path.exists() or not path.is_dir():
@@ -16,21 +29,13 @@ def group_measurement_files_by_key(path):
 
     for file in path.iterdir():
         if file.is_file() and file.suffix == ".csv":
-            match = pattern_with_brackets.match(file.name)
-            if not match:
-                match = pattern_without_brackets.match(file.name)
-
-            if match:
-                year, variable, frequency = match.groups()
-                key = (year, variable, frequency)
-
+            key_value = get_measurement_keys(file)
+            if key_value:
+                key, file = key_value
                 if key not in result:
                     result[key] = []
-
                 result[key].append(file)
                 logger.info(f"Dopasowano plik: {file.name} → {key}")
-            else:
-                logger.debug(f"Pominięto niedopasowany plik: {file.name}")
 
     if not result:
         logger.warning("Nie znaleziono żadnych pasujących plików.")
@@ -39,16 +44,15 @@ def group_measurement_files_by_key(path):
 
     return result
 
+def main() -> None:
+    path = Path("./data/measurements")
+    grouped_files = group_measurement_files_by_key(path)
 
-# def main():
-#     path = Path("./data/measurements")
-#     grouped_files = group_measurement_files_by_key(path)
-#
-#     for key, files in grouped_files.items():
-#         print(f"{key}:")
-#         for file in files:
-#             print(f"  - {file.name}")
-#
-#
-# if __name__ == "__main__":
-#     main()
+    for key, files in grouped_files.items():
+        print(f"{key}:")
+        for file in files:
+            print(f"  - {file.name}")
+
+
+if __name__ == "__main__":
+    main()

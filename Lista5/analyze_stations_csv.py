@@ -66,15 +66,15 @@ def analyze_stations_csv(file_path: Path):
     })
 
 
-# def main():
-#     file_path = Path("./data/stacje.csv")
-#
-#     if not file_path.exists():
-#         print(f"Plik {file_path} nie istnieje.")
-#         return
-#
-#     df = analyze_stations_csv(file_path)
-#
-#
-# if __name__ == "__main__":
-#     main()
+def main():
+    file_path = Path("./data/stacje.csv")
+
+    if not file_path.exists():
+        print(f"Plik {file_path} nie istnieje.")
+        return
+
+    df = analyze_stations_csv(file_path)
+
+
+if __name__ == "__main__":
+    main()
