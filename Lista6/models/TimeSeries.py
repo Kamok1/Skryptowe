@@ -1,5 +1,5 @@
 ﻿import datetime
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 from collections import namedtuple
@@ -35,18 +35,18 @@ class TimeSeries:
         self.data.extend(new_data)
 
     @property
-    def mean(self) -> np.floating:
+    def mean(self) -> Optional[np.floating]:
         clean_values = [item.value for item in self.data if item.value is not None]
         if len(clean_values) > 0:
             return np.mean(clean_values)
-        return np.floating(0)
+        return None
 
     @property
-    def stddev(self) -> np.floating:
+    def stddev(self) -> Optional[np.floating]:
         clean_values = [item.value for item in self.data if item.value is not None]
         if len(clean_values) > 0:
             return np.std(clean_values)
-        return np.floating(0)
+        return None
 
     def __repr__(self) -> str:
         return f"TimeSeries(indicator={self.indicator}, station_code={self.station_code}, " \
