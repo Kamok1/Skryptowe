@@ -3,7 +3,7 @@ from Lista6.validators.SeriesValidator import SeriesValidator
 
 
 def _generate_anomaly_message(threshold, date, value, series):
-    return (f"Threshold exceeded on {date}: value = {value} exceeds threshold"
+    return (f"Threshold exceeded on {date} : value = {value} exceeds threshold"
             f" {threshold} | {repr(series)}")
 
 class ThresholdDetector(SeriesValidator):

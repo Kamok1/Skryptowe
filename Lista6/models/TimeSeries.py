@@ -20,6 +20,8 @@ class TimeSeries:
     def __getitem__(self, key) -> List[tuple]:
         if isinstance(key, slice):
             return [(item.date, item.value) for item in self.data[key.start:key.stop]]
+        elif isinstance(key, int):
+            return [(item.date, item.value) for item in self.data[key]]
         elif isinstance(key, (datetime.date, datetime.datetime)):
             indices = [i for i, item in enumerate(self.data) if item.date.date() == key.date()]
             if indices:

@@ -1,21 +1,17 @@
 ﻿from __future__ import annotations
 
 import functools
-import inspect
 import logging
-from itertools import dropwhile, accumulate, repeat, islice
 import random
 import string
 import time
-from typing import Callable, Dict, Generator, Iterable, Iterator, List, Sequence, TypeVar
-
+from itertools import dropwhile, accumulate, repeat, islice
+from typing import Callable, Generator, Iterable, Iterator, Sequence, Any
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",
 )
-
-T = TypeVar("T")
 
 def acronym(words: Iterable[str]) -> str:
     return "".join(w[0].upper() for w in words if w)
@@ -26,15 +22,17 @@ def median(numbers: Sequence[float]) -> float:
     mid = len(nums) // 2
     return sum(nums[mid - 1:mid + 1]) / (2 - len(nums) % 2)
 
-def pierwiastek(x: float, epsilon: float = 1e-10) -> float:
-    def step(y): return (y + x / y) / 2
-    return next(
-        dropwhile(
-            lambda y: abs(y * y - x) >= epsilon,
-            accumulate(repeat(None), lambda y, _: step(y), initial=x / 2)
-        )
-    ) * (x != 0)
-
+def root(x: float, epsilon: float = 1e-10) -> float:
+    start = x if x > 1 else 1.0
+    approximations = accumulate(
+        repeat(0),
+        lambda y, _ : (y + x / y) / 2,
+        initial=start
+    )
+    return next(dropwhile(
+        lambda y: abs(y * y - x) > epsilon,
+        approximations
+    ))
 
 def make_alpha_dict(text: str) -> dict[str, list[str]]:
     words = text.split()
@@ -106,14 +104,14 @@ class PasswordGenerator(Iterator[str]):
 
 
 
-def make_generator(f: Callable[[int], T]) -> Generator[T, None, None]:
+def make_generator(f: Callable[[int], Any]) -> Generator[Any, None, None]:
     n = 1
     while True:
         yield f(n)
         n += 1
 
 
-def make_generator_mem(f: Callable[[int], T]) -> Generator[T, None, None]:
+def make_generator_mem(f: Callable[[int], Any]) -> Generator[Any, None, None]:
     if not hasattr(f, "__memoized__"):
         f.__memoized__ = functools.lru_cache(maxsize=None)(f)
     return make_generator(f.__memoized__)
@@ -144,7 +142,7 @@ def log(level: int = logging.INFO):
 if __name__ == "__main__":
     print("acronym:", acronym(["Zakład", "Ubezpieczeń", "Społecznych"]))
     print("median:", median([1, 3, 2, 4]))
-    print("pierwiastek:", pierwiastek(3, epsilon=0.1))
+    print("pierwiastek:", root(3, epsilon=0.1))
     print("make_alpha_dict:", make_alpha_dict("on i ona"))
     print("flatten:", flatten([1, [2, 3], [[4, 5], 6]]))
 
@@ -194,8 +192,8 @@ if __name__ == "__main__":
     add(2, 3)
 
     @log()
-    class Foo:
+    class Test:
         def __init__(self, x):
             self.x = x
 
-    Foo(42)
+    Test(42)

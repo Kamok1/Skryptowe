@@ -14,6 +14,7 @@ def main():
 
     print(f"Znaleziono {len(measurements)} plików pomiarowych.")
     tss = measurements.get_by_parameter("Pb(PM10)")
+    a = tss[0][0]
 
 
     parameters = set(ts.indicator for ts in tss)
