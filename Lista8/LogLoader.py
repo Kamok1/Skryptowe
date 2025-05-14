@@ -1,4 +1,6 @@
-﻿from Lista8.HttpLog import HttpLog
+﻿from typing import List
+
+from Lista8.HttpLog import HttpLog
 from Lista8.helpers import get_logger
 
 
@@ -11,7 +13,7 @@ class LogLoader:
     def __len__(self) -> int:
         return len(self.logs)
 
-    def load_logs(self, filename):
+    def load_logs(self, filename: str) -> None:
         try:
             with open(filename, 'r') as file:
                 raw_logs = file.readlines()
@@ -20,12 +22,14 @@ class LogLoader:
                         self.logs.append(HttpLog(log.strip()))
                     except Exception as e:
                         self.logger.error(f"Błąd wczytywania logu: {log.strip()} | Błąd: {e}")
+            self.logs.sort(key=lambda log: log.timestamp)
         except Exception as e:
             self.logger.error(f"Błąd wczytywania pliku: {e}")
             raise
 
-    def get_all_logs(self):
+
+    def get_all_logs(self) -> List[HttpLog]:
         return self.logs
 
-    def get_filtered_logs(self, start_date, end_date):
+    def get_filtered_logs(self, start_date, end_date) -> List[HttpLog]:
         return [log for log in self.logs if start_date <= log.timestamp <= end_date]

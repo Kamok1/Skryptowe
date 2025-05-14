@@ -16,7 +16,7 @@ RESPONSE_SIZE = 'response_size'
 REFERER = 'referer'
 USER_AGENT = 'user_agent'
 
-def parse_log(raw_log):
+def parse_log(raw_log: str) -> dict:
     match = re.match(COMBINED_LOG_FORMAT_REGEX, raw_log)
     if match:
         return match.groupdict()
@@ -24,7 +24,7 @@ def parse_log(raw_log):
         raise ValueError(f"Log line does not match expected format: {raw_log}")
 
 class HttpLog:
-    def __init__(self, raw_log):
+    def __init__(self, raw_log: str) -> None:
         log_data = parse_log(raw_log)
         self.remote_host = log_data.get(REMOTE_HOST)
         self.identity = log_data.get(IDENTITY)
@@ -40,6 +40,8 @@ class HttpLog:
         self.raw_log = raw_log
 
     @property
-    def preview(self):
-        return self.raw_log[:30] + "..." if len(self.raw_log) > 30 else self.raw_log
+    def preview(self) -> str:
+        return self.preview_by_len()
 
+    def preview_by_len(self, length: int = 30) -> str:
+        return self.raw_log[:length] + "..." if len(self.raw_log) > length else self.raw_log

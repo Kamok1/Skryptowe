@@ -1,17 +1,19 @@
 ﻿import logging
 import sys
 from datetime import datetime
+from logging import Logger
+from typing import Optional
 
 import pytz
 
 
-def safe_int(value):
+def safe_int(value: str) -> int:
     try:
         return int(value)
     except ValueError:
         return 0
 
-def parse_timestamp(timestamp_str):
+def parse_timestamp(timestamp_str: str) -> datetime:
     timestamp_str = timestamp_str.strip('[]')
     try:
         return datetime.strptime(timestamp_str, "%d/%b/%Y:%H:%M:%S %z")
@@ -19,7 +21,7 @@ def parse_timestamp(timestamp_str):
         return datetime.strptime(timestamp_str, "%d/%b/%Y:%H:%M:%S").replace(tzinfo=pytz.UTC)
 
 
-def get_logger(name="logger", enabled=None):
+def get_logger(name: str = "logger", enabled: Optional[bool] = None) -> Logger:
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 
