@@ -4,7 +4,7 @@ from Lista8.helpers import safe_int, parse_timestamp
 
 # https://stackoverflow.com/questions/9234699/understanding-apaches-access-log
 
-COMBINED_LOG_FORMAT_REGEX = r'(?P<remote_host>\S+) \S+ \S+ \[(?P<timestamp>[^\]]+)\] "(?P<method>\S+) (?P<request_line>[^\s]+ \S+)" (?P<status_code>\d+) (?P<response_size>\S+) "(?P<referer>[^"]*)" "(?P<user_agent>[^"]*)"'
+COMBINED_LOG_FORMAT_REGEX = r'(?P<remote_host>\S+) (?P<identity>\S+) (?P<username>\S+) \[(?P<timestamp>[^\]]+)\] "(?P<method>\S+) (?P<request_line>[^\s]+ \S+)" (?P<status_code>\d+) (?P<response_size>\S+) "(?P<referer>[^"]*)" "(?P<user_agent>[^"]*)"'
 REMOTE_HOST = 'remote_host'
 IDENTITY = 'identity'
 USERNAME = 'username'

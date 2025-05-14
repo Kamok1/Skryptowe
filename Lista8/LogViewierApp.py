@@ -14,7 +14,7 @@ from LogLoader import LogLoader
 from HttpLog import HttpLog
 
 UTC = pytz.utc
-MISSING_VALUE = "—"
+MISSING_VALUE = "-"
 DATE_PATTERN = "dd.mm.yyyy"
 STRFTIME_PATTERN = DATE_PATTERN.replace("dd", "%d").replace("mm", "%m").replace("yyyy", "%Y")
 
