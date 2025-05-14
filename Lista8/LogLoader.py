@@ -1,7 +1,7 @@
 ﻿from typing import List
 
-from Lista8.HttpLog import HttpLog
-from Lista8.helpers import get_logger
+from HttpLog import HttpLog
+from helpers import get_logger
 
 
 class LogLoader:

@@ -1,6 +1,6 @@
 ﻿import re
 
-from Lista8.helpers import safe_int, parse_timestamp
+from helpers import safe_int, parse_timestamp
 
 # https://stackoverflow.com/questions/9234699/understanding-apaches-access-log
 

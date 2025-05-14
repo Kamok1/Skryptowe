@@ -9,7 +9,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from tkcalendar import DateEntry
 
-from Lista8.FieldKey import FieldKey
+from FieldKey import FieldKey
 from LogLoader import LogLoader
 from HttpLog import HttpLog
 
@@ -85,12 +85,12 @@ class LogDetailView(ttk.Frame):
 
         ttk.Label(time_row, text="Time:").grid(row=0, column=0)
         time_entry = ttk.Entry(time_row, state="readonly", width=12)
-        time_entry.grid(row=0, column=1, sticky="w")
+        time_entry.grid(row=0, column=1)
         self.detail_fields[FieldKey.TIME] = time_entry
 
         ttk.Label(time_row, text="Timezone:").grid(row=0, column=2)
         timezone_entry = ttk.Entry(time_row, state="readonly", width=18)
-        timezone_entry.grid(row=0, column=3, sticky="w")
+        timezone_entry.grid(row=0, column=3)
         self.detail_fields[FieldKey.TIMEZONE] = timezone_entry
 
         multi_line_fields = [
@@ -98,10 +98,10 @@ class LogDetailView(ttk.Frame):
             (FieldKey.REFERER, "Referer:"),
             (FieldKey.USER_AGENT, "User-Agent:"),
         ]
-        for idx, (key, label_text) in enumerate(multi_line_fields, start=5):
-            ttk.Label(self, text=label_text).grid(row=idx, column=0)
+        for row_index, (key, label_text) in enumerate(multi_line_fields, start=5):
+            ttk.Label(self, text=label_text).grid(row=row_index, column=0)
             text_widget = tk.Text(self, height=2, wrap="word", state="disabled", relief="solid", bd=1)
-            text_widget.grid(row=idx, column=1, pady=2)
+            text_widget.grid(row=row_index, column=1, pady=2)
             self.detail_fields[key] = text_widget
 
         status_row = ttk.Frame(self)
@@ -111,16 +111,16 @@ class LogDetailView(ttk.Frame):
         ttk.Label(status_row, text="Status Code:").grid(row=0, column=0)
 
         self.status_label = tk.Label(status_row,width=6,relief="groove",bd=2)
-        self.status_label.grid(row=0, column=1, sticky="w")
+        self.status_label.grid(row=0, column=1)
 
         ttk.Label(status_row, text="Method:").grid(row=0, column=2)
         method_entry = ttk.Entry(status_row, state="readonly", width=8)
-        method_entry.grid(row=0, column=3, sticky="w")
+        method_entry.grid(row=0, column=3)
         self.detail_fields[FieldKey.HTTP_METHOD] = method_entry
 
         ttk.Label(status_row, text="Size:").grid(row=0, column=4)
         size_entry = ttk.Entry(status_row, state="readonly", width=12)
-        size_entry.grid(row=0, column=5, sticky="w")
+        size_entry.grid(row=0, column=5)
         self.detail_fields[FieldKey.RESPONSE_SIZE] = size_entry
 
     def display_log(self, log: Optional[HttpLog]) -> None:
