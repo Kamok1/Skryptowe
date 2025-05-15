@@ -139,7 +139,7 @@ def log(level: int = logging.INFO):
                 )
                 return result
             return wrapper
-    return decorator     m
+    return decorator
 
 if __name__ == "__main__":
     print("acronym:", acronym(["Zakład", "Ubezpieczeń", "Społecznych"]))
