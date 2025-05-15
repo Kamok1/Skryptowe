@@ -15,6 +15,7 @@ class LogLoader:
 
     def load_logs(self, filename: str) -> None:
         try:
+            self.logs = []
             with open(filename, 'r') as file:
                 raw_logs = file.readlines()
                 for log in raw_logs:

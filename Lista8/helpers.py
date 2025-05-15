@@ -2,7 +2,6 @@
 import sys
 from datetime import datetime
 from logging import Logger
-from typing import Optional
 
 import pytz
 
@@ -21,7 +20,7 @@ def parse_timestamp(timestamp_str: str) -> datetime:
         return datetime.strptime(timestamp_str, "%d/%b/%Y:%H:%M:%S").replace(tzinfo=pytz.UTC)
 
 
-def get_logger(name: str = "logger", enabled: Optional[bool] = None) -> Logger:
+def get_logger(name: str = "logger") -> Logger:
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 

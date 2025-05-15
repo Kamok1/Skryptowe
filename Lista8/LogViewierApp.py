@@ -65,7 +65,7 @@ class LogDetailView(ttk.Frame):
 
     def _build_fields(self) -> None:
         field_definitions = [
-            (FieldKey.REMOTE_HOST, "Remote Host:", 30),
+            (FieldKey.REMOTE_HOST, "Remote Host:", 15),
             (FieldKey.DATE, "Date:", 14),
             (FieldKey.IDENTITY, "Identity:", 20),
             (FieldKey.USERNAME, "Username:", 20),
@@ -78,7 +78,6 @@ class LogDetailView(ttk.Frame):
 
         time_row = ttk.Frame(self)
         time_row.grid(row=4, column=0, columnspan=2, sticky="w", padx=43)
-        time_row.columnconfigure(2, weight=1)
 
         ttk.Label(time_row, text="Time:").grid(row=0, column=0)
         time_entry = ttk.Entry(time_row, state="readonly", width=12)
@@ -103,7 +102,6 @@ class LogDetailView(ttk.Frame):
 
         status_row = ttk.Frame(self)
         status_row.grid(row=8, column=0, columnspan=2, sticky="w", padx=6)
-        status_row.columnconfigure(6, weight=1)
 
         ttk.Label(status_row, text="Status Code:").grid(row=0, column=0)
 

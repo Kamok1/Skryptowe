@@ -4,17 +4,17 @@ from helpers import safe_int, parse_timestamp
 
 # https://stackoverflow.com/questions/9234699/understanding-apaches-access-log
 
-COMBINED_LOG_FORMAT_REGEX = r'(?P<remote_host>\S+) (?P<identity>\S+) (?P<username>\S+) \[(?P<timestamp>[^\]]+)\] "(?P<method>\S+) (?P<request_line>[^\s]+ \S+)" (?P<status_code>\d+) (?P<response_size>\S+) "(?P<referer>[^"]*)" "(?P<user_agent>[^"]*)"'
-REMOTE_HOST = 'remote_host'
-IDENTITY = 'identity'
-USERNAME = 'username'
-TIMESTAMP = 'timestamp'
-METHOD = 'method'
-REQUEST_LINE = 'request_line'
-STATUS_CODE = 'status_code'
-RESPONSE_SIZE = 'response_size'
-REFERER = 'referer'
-USER_AGENT = 'user_agent'
+COMBINED_LOG_FORMAT_REGEX: str = r'(?P<remote_host>\S+) (?P<identity>\S+) (?P<username>\S+) \[(?P<timestamp>[^\]]+)\] "(?P<method>\S+) (?P<request_line>[^\s]+ \S+)" (?P<status_code>\d+) (?P<response_size>\S+) "(?P<referer>[^"]*)" "(?P<user_agent>[^"]*)"'
+REMOTE_HOST: str = 'remote_host'
+IDENTITY: str = 'identity'
+USERNAME: str = 'username'
+TIMESTAMP: str = 'timestamp'
+METHOD: str = 'method'
+REQUEST_LINE: str = 'request_line'
+STATUS_CODE: str = 'status_code'
+RESPONSE_SIZE: str = 'response_size'
+REFERER: str = 'referer'
+USER_AGENT: str = 'user_agent'
 
 def parse_log(raw_log: str) -> dict:
     match = re.match(COMBINED_LOG_FORMAT_REGEX, raw_log)

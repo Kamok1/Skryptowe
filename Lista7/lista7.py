@@ -5,6 +5,7 @@ import logging
 import random
 import string
 import time
+from functools import lru_cache
 from itertools import dropwhile, accumulate, repeat, islice
 from typing import Callable, Generator, Iterable, Iterator, Sequence, Any
 
@@ -105,16 +106,17 @@ class PasswordGenerator(Iterator[str]):
 
 
 def make_generator(f: Callable[[int], Any]) -> Generator[Any, None, None]:
-    n = 1
-    while True:
-        yield f(n)
-        n += 1
+    def generator():
+        n = 1
+        while True:
+            yield f(n)
+            n += 1
+    return generator()
 
 
+@lru_cache(maxsize=None)
 def make_generator_mem(f: Callable[[int], Any]) -> Generator[Any, None, None]:
-    if not hasattr(f, "__memoized__"):
-        f.__memoized__ = functools.lru_cache(maxsize=None)(f)
-    return make_generator(f.__memoized__)
+    return make_generator(f)
 
 
 def log(level: int = logging.INFO):
@@ -137,7 +139,7 @@ def log(level: int = logging.INFO):
                 )
                 return result
             return wrapper
-    return decorator
+    return decorator     m
 
 if __name__ == "__main__":
     print("acronym:", acronym(["Zakład", "Ubezpieczeń", "Społecznych"]))
@@ -179,7 +181,7 @@ if __name__ == "__main__":
 
 
     start = time.perf_counter()
-    result1 = list(islice(make_generator_mem(fib), 15))
+    result1 = list(islice(make_generator_mem(fib), 100))
     t1 = time.perf_counter() - start
     print(f"[memoizacja] czas: {t1:.6f}s")
 
