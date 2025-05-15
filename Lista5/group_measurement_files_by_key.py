@@ -19,7 +19,7 @@ def get_measurement_keys(file) -> Optional[tuple]:
         return None
 
 def group_measurement_files_by_key(path) -> dict:
-    result = {}
+    result:dict = {}
 
     if not path.exists() or not path.is_dir():
         logger.error(f"Podana ścieżka {path} nie istnieje lub nie jest katalogiem.")

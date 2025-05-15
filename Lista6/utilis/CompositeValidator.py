@@ -10,7 +10,7 @@ class CompositeValidator(SeriesValidator):
         self.validators = validators
         self.mode = mode
 
-    def analyze(self, series: TimeSeries) -> List[str]:
+    def analyze(self, series: TimeSeries.TimeSeries) -> List[str]:
         all_messages = []
 
         for validator in self.validators:

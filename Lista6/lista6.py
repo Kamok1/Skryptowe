@@ -1,8 +1,11 @@
+from typing import List, cast
+
 from Lista6.enums.ValidatorType import ValidatorType
 from Lista6.models.Measurements import Measurements
 from Lista6.reporters.SimpleReporter import SimpleReporter
 from Lista6.utilis.CompositeValidator import CompositeValidator
 from Lista6.validators.OutlierDetector import OutlierDetector
+from Lista6.validators.SeriesValidator import SeriesValidator
 from Lista6.validators.ThresholdDetector import ThresholdDetector
 from Lista6.validators.ZeroSpikeDetector import ZeroSpikeDetector
 
@@ -14,7 +17,6 @@ def main():
 
     print(f"Znaleziono {len(measurements)} plików pomiarowych.")
     tss = measurements.get_by_parameter("Pb(PM10)")
-    a = tss[0][0]
 
 
     parameters = set(ts.indicator for ts in tss)
@@ -27,7 +29,9 @@ def main():
         mode=ValidatorType.OR
     )
 
-    validators = [OutlierDetector(100), ZeroSpikeDetector(), SimpleReporter(), composite_validator, ThresholdDetector(0.03)]
+    validators: List[SeriesValidator] = [OutlierDetector(100), ZeroSpikeDetector(),
+                                         cast(SeriesValidator, SimpleReporter()), composite_validator,
+                                         ThresholdDetector(0.03)]
     anomalies = measurements.detect_all_anomalies(validators, preload=False)
 
     print(f"Wykryto {len(anomalies)} anomalii.")

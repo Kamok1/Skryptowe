@@ -7,19 +7,19 @@ def _generate_anomaly_message(start_date, end_date, count, series):
 
 
 class ZeroSpikeDetector(SeriesValidator):
-    def analyze(self, series: TimeSeries) -> list[str]:
+    def analyze(self, series: TimeSeries.TimeSeries) -> list[str]:
         consecutive_zeros = 0
         anomalies = []
         start_date = None
 
-        for i, (date, value) in enumerate(series.data):
-            if value is None or value == 0:
+        for i, item in enumerate(series.data):
+            if item.value is None or item.value == 0:
                 if consecutive_zeros == 0:
-                    start_date = date
+                    start_date = item.date
                 consecutive_zeros += 1
             else:
                 if consecutive_zeros >= 3:
-                    anomalies.append(_generate_anomaly_message(start_date, date, consecutive_zeros, series))
+                    anomalies.append(_generate_anomaly_message(start_date, item.date, consecutive_zeros, series))
                 consecutive_zeros = 0
 
         if consecutive_zeros >= 3:

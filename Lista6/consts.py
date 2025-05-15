@@ -1,2 +1,2 @@
-﻿DATE_FORMAT = '%d/%m/%Y'
+﻿DATE_FORMAT: str = '%d/%m/%Y'
 

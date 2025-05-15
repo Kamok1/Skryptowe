@@ -1,4 +1,5 @@
 ﻿import datetime
+from dataclasses import dataclass
 from typing import List, Optional
 
 import numpy as np
@@ -6,30 +7,37 @@ from collections import namedtuple
 
 from Lista6.consts import DATE_FORMAT
 
-DateValue = namedtuple('DateValue', ['date', 'value'])
+@dataclass
+class DateValue:
+    date: datetime.datetime
+    value: float
 
 class TimeSeries:
-    def __init__(self, indicator, station_code, avg_time, dates, values, unit):
+    def __init__(self, indicator: str, station_code: str, avg_time: str, dates: List[datetime.datetime], values: List[float], unit: str):
         self.indicator = indicator
         self.station_code = station_code
         self.avg_time = avg_time
-        self.data = [DateValue(datetime.datetime.strptime(date, DATE_FORMAT) if isinstance(date, str) else date, value)
-                     for date, value in zip(dates, values)]
+        self.data = [
+            DateValue(datetime.datetime.strptime(date, DATE_FORMAT) if isinstance(date, str) else date, value)
+            for date, value in zip(dates, values)
+        ]
         self.unit = unit
 
-    def __getitem__(self, key) -> List[tuple]:
+    def __getitem__(self, key: object) -> List[tuple]:
         if isinstance(key, slice):
-            return [(item.date, item.value) for item in self.data[key.start:key.stop]]
-        elif isinstance(key, int):
             return [(item.date, item.value) for item in self.data[key]]
+        elif isinstance(key, int):
+            item = self.data[key]
+            return [(item.date, item.value)]
         elif isinstance(key, (datetime.date, datetime.datetime)):
-            indices = [i for i, item in enumerate(self.data) if item.date.date() == key.date()]
+            key_date = key.date() if isinstance(key, datetime.datetime) else key
+            indices = [i for i, item in enumerate(self.data) if item.date.date() == key_date]
             if indices:
                 return [(self.data[i].date, self.data[i].value) for i in indices]
             else:
                 raise KeyError(f"Date {key} not found.")
         else:
-            raise TypeError("Invalid key type. Must be datetime or slice.")
+            raise TypeError("Invalid key type. Must be datetime, int, or slice.")
 
     def add_values(self, new_dates, new_values) -> None:
         new_data = [DateValue(datetime.datetime.strptime(date, DATE_FORMAT) if isinstance(date, str) else date, value)

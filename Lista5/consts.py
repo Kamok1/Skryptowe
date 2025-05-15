@@ -1,7 +1,6 @@
-﻿STATIONS = "stations"
-
-STATION_CODE = "station_code"
-INDICATOR = "indicator"
+﻿STATIONS: str = "stations"
+STATION_CODE = 'station_code'
+INDICATOR: str = "indicator"
 AVERAGE_TIME = "avg_time"
 UNIT = "unit"
 POSITION_CODE = "position_code"

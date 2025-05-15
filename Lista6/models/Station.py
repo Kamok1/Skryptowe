@@ -1,5 +1,8 @@
-﻿class Station:
-    def __init__(self, code, name, start_date, station_type, province, city, latitude, longitude):
+﻿from datetime import datetime
+
+
+class Station:
+    def __init__(self, code: str, name: str, start_date: datetime, station_type: str, province: str, city: str, latitude: float, longitude: float):
         self.code = code
         self.name = name
         self.start_date = start_date
@@ -17,5 +20,5 @@
                f"station_type={self.station_type}, province={self.province}, city={self.city}, " \
                f"latitude={self.latitude}, longitude={self.longitude})"
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: object) -> bool:
         return isinstance(other, Station) and self.code == other.code

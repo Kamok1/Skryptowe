@@ -3,6 +3,7 @@ from datetime import datetime
 from pathlib import Path
 from Lista5.utils import get_logger
 from Lista5.consts import *
+from Lista6.models.Measurement import Measurement
 
 logger = get_logger("data_loader")
 
@@ -31,7 +32,7 @@ def parse_metadata(path):
         raise
 
 
-def parse_measurements(path):
+def parse_measurements(path: Path) -> list[Measurement]:
     logger.info(f"Otwieranie pliku pomiarowego: {path}")
     results = []
     try:
@@ -60,19 +61,12 @@ def parse_measurements(path):
                     try:
                         value = float(val)
                     except ValueError:
-                        value = None
+                        value = 0
 
                     station_code, indicator, avg_time, unit, pos_code = stations_info[i]
 
-                    results.append({
-                        TIMESTAMP: timestamp.strftime(EXTENDED_DATE_FORMAT),
-                        STATION_CODE: station_code,
-                        INDICATOR: indicator,
-                        AVERAGE_TIME: avg_time,
-                        UNIT: unit,
-                        POSITION_CODE: pos_code,
-                        VALUE: value
-                    })
+                    results.append(Measurement(timestamp.strftime(EXTENDED_DATE_FORMAT), station_code, indicator,
+                                               avg_time, unit, pos_code, value))
         logger.info(f"Zamknięto plik: {path}")
         return results
     except FileNotFoundError:

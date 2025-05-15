@@ -10,12 +10,12 @@ class ThresholdDetector(SeriesValidator):
     def __init__(self, threshold: float = 10):
         self.threshold = threshold
 
-    def analyze(self, series: TimeSeries) -> list[str]:
+    def analyze(self, series: TimeSeries.TimeSeries) -> list[str]:
         anomalies = []
 
-        for date, value in series.data:
-            if value is not None and (value > self.threshold):
-                anomalies.append(_generate_anomaly_message(self.threshold, date, value, series))
+        for item in series.data:
+            if item.value is not None and (item.value > self.threshold):
+                anomalies.append(_generate_anomaly_message(self.threshold, item.date, item.value, series))
 
         return anomalies
 

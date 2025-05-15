@@ -1,11 +1,14 @@
 ﻿import logging
 import os
 import sys
+from logging import Logger
+from typing import Optional
+
 
 def _parse_bool(value: str) -> bool:
     return str(value).strip().lower() in {"1", "true", "yes", "y", "t"}
 
-def get_logger(name="logger", enabled=None):
+def get_logger(name: str = "logger", enabled: Optional[bool] = None) -> Logger:
     logger = logging.getLogger(name)
     if enabled is None:
         enabled = _parse_bool(os.getenv("LOG_ENABLED", "0"))
