@@ -1,14 +1,11 @@
 ﻿from __future__ import annotations
-
 from datetime import datetime, time
 from pathlib import Path
 from typing import List, Optional
-
 import pytz
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from tkcalendar import DateEntry
-
 from FieldKey import FieldKey
 from LogLoader import LogLoader
 from HttpLog import HttpLog
@@ -42,7 +39,7 @@ class LogListView(ttk.Frame):
     def __init__(self, parent, selection_callback, navigation_callback) -> None:
         super().__init__(parent)
         self.pack(side="left", fill="both", expand=True)
-        self.logs_listbox = tk.Listbox(self, exportselection=False)
+        self.logs_listbox = tk.Listbox(self)
         self.logs_listbox.pack(side="left", fill="both", expand=True)
         v_scroll = ttk.Scrollbar(self, orient="vertical", command=self.logs_listbox.yview)
         v_scroll.pack(side="right", fill="y")
@@ -140,6 +137,8 @@ class LogDetailView(ttk.Frame):
             for widget in self.detail_fields.values():
                 if isinstance(widget, ttk.Entry):
                     set_entry_value(widget, "")
+                if isinstance(widget, tk.Text):
+                    set_text_value(widget, "")
             self.status_label.config(text=MISSING_VALUE)
             return
 
