@@ -1,4 +1,7 @@
-﻿from Lista6.models import TimeSeries
+﻿import datetime
+from typing import Optional
+
+from Lista6.models import TimeSeries
 from Lista6.validators.SeriesValidator import SeriesValidator
 
 
@@ -8,9 +11,9 @@ def _generate_anomaly_message(start_date, end_date, count, series):
 
 class ZeroSpikeDetector(SeriesValidator):
     def analyze(self, series: TimeSeries.TimeSeries) -> list[str]:
-        consecutive_zeros = 0
-        anomalies = []
-        start_date = None
+        consecutive_zeros: int = 0
+        anomalies: list[str] = []
+        start_date: Optional[datetime.datetime] = None
 
         for i, item in enumerate(series.data):
             if item.value is None or item.value == 0:

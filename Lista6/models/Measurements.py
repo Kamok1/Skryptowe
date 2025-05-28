@@ -28,11 +28,11 @@ class Measurements:
         return any((keys := get_measurement_keys(Path(file))) is not None
             and parameter_name == keys[0][FileInfo.VARIABLE.value] for file in self.files)
 
-    def get_by_parameter(self, param_name: str) -> List[TimeSeries]:
+    def get_by_parameter(self, param_name: str) -> list[TimeSeries]:
         self._load_series_by_key(param_name, FileInfo.VARIABLE)
         return self._get_series_by_key(param_name, StationInfo.VARIABLE)
 
-    def get_by_station(self, station_code: str) -> List[TimeSeries]:
+    def get_by_station(self, station_code: str) -> list[TimeSeries]:
         return self._get_series_by_key(station_code, StationInfo.STATION)
 
     def _load_series_by_key(self, param_value: str, param_type: FileInfo) -> None:
@@ -43,24 +43,24 @@ class Measurements:
         ]
         self._load_multiple_series(keys_to_load)
 
-    def _get_series_by_key(self, param_value: str, param_type: StationInfo) -> List[TimeSeries]:
+    def _get_series_by_key(self, param_value: str, param_type: StationInfo) -> list[TimeSeries]:
         keys_to_load = [key for key in self._loaded_data.keys() if key[param_type.value] == param_value]
         return [self._loaded_data[key] for key in keys_to_load]
 
-    def _load_multiple_series(self, files: List[str]) -> None:
+    def _load_multiple_series(self, files: list[str]) -> None:
         for file in files:
             self._load_series(file)
 
-    def _load_all_series(self) -> List[TimeSeries]:
+    def _load_all_series(self) -> list[TimeSeries]:
         if not self._loaded_data:
             self._load_multiple_series(self.files)
         return list(self._loaded_data.values())
 
-    def detect_all_anomalies(self, validators: List[SeriesValidator], preload: bool = False) -> List[str]:
+    def detect_all_anomalies(self, validators: list[SeriesValidator], preload: bool = False) -> list[str]:
         if preload:
             self._load_all_series()
 
-        anomalies: List[str] = []
+        anomalies: list[str] = []
 
         for series in self._loaded_data.values():
             for validator in validators:

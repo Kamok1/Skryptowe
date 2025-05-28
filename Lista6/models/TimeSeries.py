@@ -1,6 +1,6 @@
 ﻿import datetime
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import numpy as np
 from collections import namedtuple
@@ -23,7 +23,7 @@ class TimeSeries:
         ]
         self.unit = unit
 
-    def __getitem__(self, key: object) -> List[tuple]:
+    def __getitem__(self, key: object) -> list[tuple[datetime.datetime, float]]:
         if isinstance(key, slice):
             return [(item.date, item.value) for item in self.data[key]]
         elif isinstance(key, int):
@@ -39,9 +39,11 @@ class TimeSeries:
         else:
             raise TypeError("Invalid key type. Must be datetime, int, or slice.")
 
-    def add_values(self, new_dates, new_values) -> None:
-        new_data = [DateValue(datetime.datetime.strptime(date, DATE_FORMAT) if isinstance(date, str) else date, value)
-                    for date, value in zip(new_dates, new_values)]
+    def add_values(self, new_dates: list[datetime.datetime], new_values: list[float]) -> None:
+        new_data: list[DateValue] = [
+            DateValue(date, value)
+            for date, value in zip(new_dates, new_values)
+        ]
         self.data.extend(new_data)
 
     @property
